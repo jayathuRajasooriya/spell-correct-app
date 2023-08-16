@@ -1,49 +1,66 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { FormEvent } from 'react'
 import styles from '../styles/Home.module.css'
+import React, {useState, useEffect} from 'react'
 
 export default function IndexPage() {
+  const [text, setText] =  useState('');
+
+  // const handleChange = (e) =>{
+  //   setText({e.target.value});
+  // }
+
+  var apidata = "s";
+  // Handle the submit event on form submit.
+  const handleSubmit = async (event: FormEvent) => {
+    // Stop the form from submitting and refreshing the page.
+    event.preventDefault()
+
+    // Cast the event target to an html form
+    const form = event.target as HTMLFormElement
+
+    // Get data from the form.
+    const data = {
+       content: form.query.value as string,
+    }
+
+    // Send the form data to our API and get a response.
+    const response = await fetch('/api/form', {
+      // Body of the request is the JSON data we created above.
+      body: JSON.stringify(data),
+      // Tell the server we're sending JSON.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // The method is POST because we are sending data.
+      method: 'POST',
+    })
+
+  
+    // Get the response data from server as JSON.
+    // If server returns the name submitted, that means the form works.
+    const result = await response.json()
+    apidata = `${result.data}`
+    setText(apidata)
+    // alert(`Did you mean: ${apidata}`)
+  }
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Next.js forms</title>
-        <meta name="description" content="Learn forms with Next.js" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className="container">
+      <h1 className={styles.title}>
+        Spelling Correction
+      </h1>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Forms with <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by looking at{' '}
-          <code className={styles.code}>pages/js-form.js</code> and{' '}
-          <code className={styles.code}>pages/no-js-form.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <Link href="/js-form" className={styles.card}>
-            <h2>Form with JavaScript &rarr;</h2>
-            <p>Learn to handle forms with JavaScript in Next.js.</p>
-          </Link>
-
-          <Link href="/no-js-form" className={styles.card}>
-            <h2>Form without JavaScript &rarr;</h2>
-            <p>Learn to handle forms without JavaScript in Next.js.</p>
-          </Link>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer">
-          Built with Next.js | Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="query">Enter query</label>
+        <input type="text" id="query" name="query" required />
+        {/* <p>{text}</p> */}
+        {/* <label htmlFor="last">Last Name</label>
+        <input type="text" id="last" name="last" required /> */}
+        <button type="submit">Check</button>
+        <p>{`${text}`}</p>
+      </form>
     </div>
   )
 }

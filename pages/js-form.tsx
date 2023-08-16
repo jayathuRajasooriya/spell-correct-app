@@ -13,8 +13,8 @@ export default function PageWithJSbasedForm() {
 
     // Get data from the form.
     const data = {
-      first: form.first.value as string,
-      last: form.last.value as string,
+       content: form.first.value as string,
+      // last: form.last.value as string,
     }
 
     // Send the form data to our API and get a response.
@@ -46,10 +46,10 @@ export default function PageWithJSbasedForm() {
       </p>
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="first">First Name</label>
-        <input type="text" id="first" name="first" required />
-        <label htmlFor="last">Last Name</label>
-        <input type="text" id="last" name="last" required />
+        <label htmlFor="firstname">First Name</label>
+        <input type="text" id="first" name="input" required />
+        {/* <label htmlFor="last">Last Name</label>
+        <input type="text" id="last" name="last" required /> */}
         <button type="submit">Submit</button>
       </form>
     </div>

@@ -9,13 +9,13 @@ export default function handler(
   res: NextApiResponse<ResponseData>
 ) {
   const body = req.body
-  console.log('body: ', body)
+  console.log('body details: ', body)
 
-  // Both of these are required.
-  if (!body.first || !body.last) {
-    return res.json({ data: 'First or last name not found' })
-  }
+  // sending data back to frontend
+  // if (!body.first || !body.last) {
+    // return res.json({ data: 'First or last name not found' })
+  // }
 
   // Found the name.
-  res.json({ data: `${body.first} ${body.last}` })
+  res.json({ data: `Entered query is incorrect. Do you mean: ${body.content}` })
 }
